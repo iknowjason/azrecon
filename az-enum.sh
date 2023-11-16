@@ -71,6 +71,24 @@ spf_record=$(nslookup -type=txt $DOMAIN)
 echo "SPF Record:"
 echo "$spf_record"
 
+# Check HTTP/HTTPS status
+print_color "1;34" "\nChecking HTTP/HTTPS status..."
+http_status=$(curl -s -I http://$DOMAIN | head -n 1)
+https_status=$(curl -s -I https://$DOMAIN | head -n 1)
+echo "HTTP Status:"
+echo "$http_status"
+echo "HTTPS Status:"
+echo "$https_status" 
+
+# Enumerate DNS SRV records for LDAP and Kerberos
+print_color "1;34" "\nEnumerating DNS SRV records for LDAP and Kerberos..."
+ldap_srv_records=$(nslookup -type=srv _ldap._tcp.$DOMAIN)
+kerberos_srv_records=$(nslookup -type=srv _kerberos._tcp.$DOMAIN)
+echo "LDAP SRV Records:"
+echo "$ldap_srv_records"
+echo "Kerberos SRV Records:"
+echo "$kerberos_srv_records"
+
 # Run an Nmap scan with -Pn option
 TARGET=$DOMAIN
 if [ -n "$TARGET" ]; then
